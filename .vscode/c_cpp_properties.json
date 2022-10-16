@@ -1,0 +1,76 @@
+//
+// !!! WARNING !!! AUTO-GENERATED FILE!
+// PLEASE DO NOT MODIFY IT AND USE "platformio.ini":
+// https://docs.platformio.org/page/projectconf/section_env_build.html#build-flags
+//
+{
+    "configurations": [
+        {
+            "name": "PlatformIO",
+            "includePath": [
+                "/Users/greg/Documents/projects/april-tag-screen/include",
+                "/Users/greg/Documents/projects/april-tag-screen/src",
+                "/Users/greg/Documents/projects/april-tag-screen/.pio/libdeps/leonardo/event_timer/src",
+                "/Users/greg/Documents/projects/april-tag-screen/.pio/libdeps/leonardo/Adafruit FT6206 Library",
+                "/Users/greg/Documents/projects/april-tag-screen/.pio/libdeps/leonardo/Adafruit ILI9341",
+                "/Users/greg/Documents/projects/april-tag-screen/.pio/libdeps/leonardo/Adafruit GFX Library",
+                "/Users/greg/Documents/projects/april-tag-screen/.pio/libdeps/leonardo/Adafruit BusIO",
+                "/Users/greg/.platformio/packages/framework-arduino-avr/libraries/SPI/src",
+                "/Users/greg/.platformio/packages/framework-arduino-avr/libraries/Wire/src",
+                "/Users/greg/.platformio/packages/framework-arduino-avr/cores/arduino",
+                "/Users/greg/.platformio/packages/framework-arduino-avr/variants/leonardo",
+                "/Users/greg/Documents/PlatformIO/lib/template-micro/src",
+                "/Users/greg/Documents/projects/april-tag-screen/.pio/libdeps/leonardo/Adafruit STMPE610",
+                "/Users/greg/Documents/projects/april-tag-screen/.pio/libdeps/leonardo/Adafruit TouchScreen",
+                "/Users/greg/.platformio/packages/framework-arduino-avr/libraries/EEPROM/src",
+                "/Users/greg/.platformio/packages/framework-arduino-avr/libraries/HID/src",
+                "/Users/greg/.platformio/packages/framework-arduino-avr/libraries/SoftwareSerial/src",
+                ""
+            ],
+            "browse": {
+                "limitSymbolsToIncludedHeaders": true,
+                "path": [
+                    "/Users/greg/Documents/projects/april-tag-screen/include",
+                    "/Users/greg/Documents/projects/april-tag-screen/src",
+                    "/Users/greg/Documents/projects/april-tag-screen/.pio/libdeps/leonardo/event_timer/src",
+                    "/Users/greg/Documents/projects/april-tag-screen/.pio/libdeps/leonardo/Adafruit FT6206 Library",
+                    "/Users/greg/Documents/projects/april-tag-screen/.pio/libdeps/leonardo/Adafruit ILI9341",
+                    "/Users/greg/Documents/projects/april-tag-screen/.pio/libdeps/leonardo/Adafruit GFX Library",
+                    "/Users/greg/Documents/projects/april-tag-screen/.pio/libdeps/leonardo/Adafruit BusIO",
+                    "/Users/greg/.platformio/packages/framework-arduino-avr/libraries/SPI/src",
+                    "/Users/greg/.platformio/packages/framework-arduino-avr/libraries/Wire/src",
+                    "/Users/greg/.platformio/packages/framework-arduino-avr/cores/arduino",
+                    "/Users/greg/.platformio/packages/framework-arduino-avr/variants/leonardo",
+                    "/Users/greg/Documents/PlatformIO/lib/template-micro/src",
+                    "/Users/greg/Documents/projects/april-tag-screen/.pio/libdeps/leonardo/Adafruit STMPE610",
+                    "/Users/greg/Documents/projects/april-tag-screen/.pio/libdeps/leonardo/Adafruit TouchScreen",
+                    "/Users/greg/.platformio/packages/framework-arduino-avr/libraries/EEPROM/src",
+                    "/Users/greg/.platformio/packages/framework-arduino-avr/libraries/HID/src",
+                    "/Users/greg/.platformio/packages/framework-arduino-avr/libraries/SoftwareSerial/src",
+                    ""
+                ]
+            },
+            "defines": [
+                "PLATFORMIO=60104",
+                "ARDUINO_AVR_LEONARDO",
+                "F_CPU=16000000L",
+                "ARDUINO_ARCH_AVR",
+                "ARDUINO=10808",
+                "USB_VID=0x2341",
+                "USB_PID=0x8036",
+                "USB_PRODUCT=\"Arduino Leonardo\"",
+                "USB_MANUFACTURER=\"Arduino\"",
+                "__AVR_ATmega32U4__",
+                ""
+            ],
+            "cStandard": "c11",
+            "cppStandard": "c++11",
+            "compilerPath": "/Users/greg/.platformio/packages/toolchain-atmelavr/bin/avr-gcc",
+            "compilerArgs": [
+                "-mmcu=atmega32u4",
+                ""
+            ]
+        }
+    ],
+    "version": 4
+}
