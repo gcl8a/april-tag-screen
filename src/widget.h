@@ -64,6 +64,7 @@ public:
       if(fillColor != edgeColor)
         tft.drawRect(left, top, (right - left), (bottom - top), edgeColor);      
     }
+    tft.display();
   }
 
   int IsClicked(int x, int y) 

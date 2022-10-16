@@ -24,6 +24,7 @@ public:
   {
     uint16_t pixelSize = (right - left) / 8; // "pixel" here is a tag square
 
+    tft.clearDisplay();
     // white bounding box
     RectangularWidget::Draw();
 
@@ -47,6 +48,7 @@ public:
             }
         }
 
+    tft.display();
   }
 
   void OnClick(void)

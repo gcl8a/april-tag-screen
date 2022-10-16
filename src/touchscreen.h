@@ -82,7 +82,7 @@ Page* SetupPages(void)
   Serial.println(F("SetupPages"));
 
   Serial.println(F("/pages"));
-  pageTag->AddWidget(new TagWidget(20, 140, 0, 60, 1));
+  pageTag->AddWidget(new TagWidget(32, 96, 0, 64, 1));
   Serial.println(F("/pageHome"));
 
   Serial.println(F("/SetupPages"));

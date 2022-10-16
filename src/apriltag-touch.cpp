@@ -36,27 +36,15 @@ void setup(void)
   Serial.println(F("Init"));
   
   Wire.begin();
-
-  //needs to happen early -- before zones are initialized in ::SetupPages()
-  //rtc.Init();
   
   tft.begin();
-  //tft.setRotation(1);
-
-  // if (!ctp.begin(40)) // pass in 'sensitivity' coefficient
-  // {  
-  //   Serial.println(F("Couldn't start FT6206!"));
-  // }
-  tft.drawPixel(10, 10, SSD1306_WHITE);
-
-  //tft.fillScreen(SSD1306_WHITE);
-  //tft.print(F("Init"));
+  tft.clearDisplay();
+  tft.display();
 
   activePage = SetupPages();
 
   timerDisplay.start(2000);
 
-  while(1) {}
 }
 
 void loop() 
