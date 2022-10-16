@@ -9,7 +9,7 @@ protected:
 
 public:
   TagWidget(int l, int r, int t, int b, uint8_t id) 
-      : RectangularWidget(l, r, t, b, NONE, ILI9341_WHITE, ILI9341_WHITE), tagID(id)
+      : RectangularWidget(l, r, t, b, NONE, SSD1306_WHITE, SSD1306_WHITE), tagID(id)
   {
         pattern[0][2] = 1;
         pattern[1][2] = 1;
@@ -31,7 +31,7 @@ public:
     uint16_t leftCorner = left + pixelSize;
     uint16_t topCorner = top + pixelSize;
     
-    tft.fillRect(leftCorner, topCorner, pixelSize * 6, pixelSize * 6, ILI9341_BLACK);
+    tft.fillRect(leftCorner, topCorner, pixelSize * 6, pixelSize * 6, SSD1306_BLACK);
 
     leftCorner += pixelSize;
     topCorner += pixelSize;
@@ -43,7 +43,7 @@ public:
             {   
                 uint16_t l = leftCorner + j * pixelSize;
                 uint16_t t = topCorner + i * pixelSize;
-                tft.fillRect(l, t, pixelSize, pixelSize, ILI9341_WHITE);
+                tft.fillRect(l, t, pixelSize, pixelSize, SSD1306_WHITE);
             }
         }
 

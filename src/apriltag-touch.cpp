@@ -14,7 +14,7 @@ EventTimer timerDisplay;
 void setup(void) 
 {
   Serial.begin(115200);
-  //while(!Serial) {}
+  while(!Serial) {}
   Serial.println(F("Init"));
   
   Wire.begin();
@@ -25,12 +25,12 @@ void setup(void)
   tft.begin();
   tft.setRotation(1);
 
-  if (!ctp.begin(40)) // pass in 'sensitivity' coefficient
-  {  
-    Serial.println(F("Couldn't start FT6206!"));
-  }
+  // if (!ctp.begin(40)) // pass in 'sensitivity' coefficient
+  // {  
+  //   Serial.println(F("Couldn't start FT6206!"));
+  // }
   
-  tft.fillScreen(ILI9341_BLACK);
+  tft.fillScreen(SSD1306_BLACK);
   tft.print(F("Init"));
 
   activePage = SetupPages();

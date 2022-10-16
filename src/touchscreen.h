@@ -16,7 +16,7 @@ public:
   
   void Draw(void)
   {
-    tft.fillScreen(ILI9341_BLACK);
+    tft.fillScreen(SSD1306_BLACK);
 
     WidgetIterator widgetIter(widgets);
     while(widgetIter.Current())
@@ -82,7 +82,7 @@ Page* SetupPages(void)
   Serial.println(F("SetupPages"));
 
   Serial.println(F("/pages"));
-  pageTag->AddWidget(new TagWidget(40, 280, 0, 240, 1));
+  pageTag->AddWidget(new TagWidget(20, 140, 0, 60, 1));
   Serial.println(F("/pageHome"));
 
   Serial.println(F("/SetupPages"));
