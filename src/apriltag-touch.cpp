@@ -9,6 +9,24 @@
 
 EventTimer timerDisplay;
 
+#include <Adafruit_GFX.h>      // Core graphics library
+//#include <Adafruit_ILI9341.h>  //display
+//#include <Adafruit_FT6206.h>   //touchscreen
+#include <Adafruit_SSD1306.h>
+
+#define SCREEN_WIDTH 128 // OLED display width, in pixels
+#define SCREEN_HEIGHT 64 // OLED display height, in pixels
+
+// Declaration for an SSD1306 display connected to I2C (SDA, SCL pins)
+// The pins for I2C are defined by the Wire-library. 
+// On an arduino UNO:       A4(SDA), A5(SCL)
+// On an arduino MEGA 2560: 20(SDA), 21(SCL)
+// On an arduino LEONARDO:   2(SDA),  3(SCL), ...
+#define OLED_RESET     -1 // Reset pin # (or -1 if sharing Arduino reset pin)
+#define SCREEN_ADDRESS 0x3D ///< See datasheet for Address; 0x3D for 128x64, 0x3C for 128x32
+Adafruit_SSD1306 tft(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
+
+
 #define DISPLAY_INTERVAL 5000UL
 
 void setup(void) 
@@ -23,19 +41,22 @@ void setup(void)
   //rtc.Init();
   
   tft.begin();
-  tft.setRotation(1);
+  //tft.setRotation(1);
 
   // if (!ctp.begin(40)) // pass in 'sensitivity' coefficient
   // {  
   //   Serial.println(F("Couldn't start FT6206!"));
   // }
-  
-  tft.fillScreen(SSD1306_BLACK);
-  tft.print(F("Init"));
+  tft.drawPixel(10, 10, SSD1306_WHITE);
+
+  //tft.fillScreen(SSD1306_WHITE);
+  //tft.print(F("Init"));
 
   activePage = SetupPages();
 
   timerDisplay.start(2000);
+
+  while(1) {}
 }
 
 void loop() 
