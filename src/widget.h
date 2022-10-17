@@ -1,35 +1,30 @@
 #ifndef __WIDGET_H
 #define __WIDGET_H
 
-
-#include <Adafruit_GFX.h>      // Core graphics library
-#include <Adafruit_SSD1306.h>
-extern Adafruit_SSD1306 tft;
-
 #include <TList.h>
+#include <Adafruit_SSD1306.h>   // for the colors...needs a better way
 
-// // The display uses hardware SPI, plus #9 & #10
-// #define TFT_CS 10
-// #define TFT_DC 9
-// Adafruit_SSD1306 tft = Adafruit_SSD1306(TFT_CS, TFT_DC);
-// //Adafruit_FT6206 ctp = Adafruit_FT6206();
+#define COLOR_WHITE SSD1306_WHITE
+#define COLOR_BLACK SSD1306_BLACK
 
-//misnomer -- really an action ------ needs to be cleaned up big time
-enum Event {NONE, RETURN, INCREMENT, DECREMENT, HOLD_ON, HOLD_OFF, ACTIVATE_COOLING, 
+enum Action {NONE, RETURN, INCREMENT, DECREMENT, HOLD_ON, HOLD_OFF, ACTIVATE_COOLING, 
             ACTIVATE_HEATING, ACTIVATE_FAN, DEACTIVATE, COMMIT, MODE_HEAT, MODE_COOL, HOLD_TOGGLE, MODE_CYCLE};
+
+class Screen;
 
 class Widget
 {
 protected:
-  Event action; //Action to respond with -- EEK! This is terrible nomenclature!
+  Screen* screen = NULL;
+  Action action; //Action to respond with -- EEK! This is terrible nomenclature!
 
 public:
-  Widget(Event a) {action = a;}
+  Widget(Screen* scr, Action a);
   
   virtual void Draw(void) = 0;
   virtual int IsClicked(int, int) {return 0;}
   virtual void OnClick(void) {}
-  virtual void HandleEvent(Event) {}
+  virtual void HandleEvent(Action) {}
 };
 
 class RectangularWidget : public Widget
@@ -40,70 +35,39 @@ protected:
   uint16_t edgeColor; //unused at the moment
 
 public:
-  RectangularWidget(int l, int r, int t, int b, Event a, uint16_t fill = SSD1306_BLACK,
-   uint16_t edge = SSD1306_WHITE) 
-  : Widget(a), left(l), right(r), top(t), bottom(b)
-  {  
-    fillColor = fill;
-    edgeColor = edge;
-  }
+  RectangularWidget(Screen* scr, int l, int r, int t, int b, Action a, uint16_t fill = COLOR_BLACK,
+   uint16_t edge = COLOR_WHITE);
 
-  void SetAttributes(uint16_t fill, uint16_t edge)
-  {
-    fillColor = fill;
-    edgeColor = edge;
-  }
-  
-  void Draw(void)
-  {
-    if(fillColor == SSD1306_BLACK) 
-      tft.drawRect(left, top, (right - left), (bottom - top), edgeColor);
-    else
-    {
-      tft.fillRect(left, top, (right - left), (bottom - top), fillColor);
-      if(fillColor != edgeColor)
-        tft.drawRect(left, top, (right - left), (bottom - top), edgeColor);      
-    }
-    tft.display();
-  }
-
-  int IsClicked(int x, int y) 
-  {
-    return (x >= left && x <= right && y >= top && y <= bottom);    
-  }
+  void SetAttributes(uint16_t fill, uint16_t edge);  
+  void Draw(void);
+  int IsClicked(int x, int y);
 };
 
-class DotWidget : public Widget
-{
-protected:
-  int x, y, radius;
-  uint16_t fillColor;
-  uint16_t edgeColor; //unused at the moment
+// class DotWidget : public Widget
+// {
+// protected:
+//   int x, y, radius;
+//   uint16_t fillColor;
+//   uint16_t edgeColor; //unused at the moment
 
-public:
-  DotWidget(int x_, int y_, int r, Event a) : Widget(a), x(x_), y(y_), radius(r)
-  {  
-    fillColor = SSD1306_BLACK;
-    edgeColor = SSD1306_BLACK;
-  }
+// public:
+//   DotWidget(Screen* scr, int x_, int y_, int r, Event a) : Widget(scr, a), x(x_), y(y_), radius(r)
+//   {  
+//     fillColor = SSD1306_BLACK;
+//     edgeColor = SSD1306_BLACK;
+//   }
 
-  void SetAttributes(uint16_t fill, uint16_t edge)
-  {
-    fillColor = fill;
-    edgeColor = edge;
-  }
+//   void SetAttributes(uint16_t fill, uint16_t edge)
+//   {
+//     fillColor = fill;
+//     edgeColor = edge;
+//   }
   
-  void Draw(void)
-  {
-    tft.fillCircle(x, y, radius, fillColor);
-  }
-};
-
-class IndicatorWidget : public DotWidget
-{
-protected:
-  
-};
+//   void Draw(void)
+//   {
+//     screen->fillCircle(x, y, radius, fillColor);
+//   }
+// };
 
 class TextWidget : public RectangularWidget
 {
@@ -113,11 +77,11 @@ protected:
   String text;
   
 public:
-  TextWidget(int l, int r, int t, int b, Event a) : RectangularWidget(l, r, t, b, a)
+  TextWidget(Screen* scr, int l, int r, int t, int b, Action a) : RectangularWidget(scr, l, r, t, b, a)
   {
     textSize = 2;
-    textColor = SSD1306_WHITE;
-    RectangularWidget::SetAttributes(SSD1306_BLACK, SSD1306_BLACK);
+    textColor = COLOR_WHITE;
+    RectangularWidget::SetAttributes(COLOR_BLACK, COLOR_BLACK);
   }
     
   void SetTextAttributes(uint8_t size, uint16_t color)
@@ -126,71 +90,64 @@ public:
     textColor = color;
   }
 
-  void Draw(void)
-  {
-    RectangularWidget::Draw();
-    tft.setCursor(left + 5, top);//(top + bottom) / 2 - (7 * textSize) / 2);
-    tft.setTextSize(textSize);
-    tft.setTextColor(textColor);
-    tft.print(text);
-  }
+  void Draw(void);
 };
 
-class CommandWidget : public TextWidget
-{
-protected:
-  Widget* targetWidget;
-public:
-  CommandWidget(int l, int r, int t, int b, Event act, Widget* target, String displayText) : 
-      TextWidget(l, r, t, b, act), targetWidget(target)
-  {
-    TextWidget::SetAttributes(SSD1306_WHITE, SSD1306_BLACK);
-    text = displayText;
-  }
+// class CommandWidget : public TextWidget
+// {
+// protected:
+//   Widget* targetWidget;
+// public:
+//   CommandWidget(Screen* scr, int l, int r, int t, int b, Event act, Widget* target, String displayText) : 
+//       TextWidget(scr, l, r, t, b, act), targetWidget(target)
+//   {
+//     TextWidget::SetAttributes(COLOR_WHITE, COLOR_BLACK);
+//     text = displayText;
+//   }
 
-  void Draw(void)
-  {
-    TextWidget::Draw();
-  }
+//   void Draw(void)
+//   {
+//     TextWidget::Draw();
+//   }
 
-  void OnClick(void)
-  {
-    if(targetWidget)
-    {
-      targetWidget->HandleEvent(action);
-    }
-  }
-};
+//   void OnClick(void)
+//   {
+//     if(targetWidget)
+//     {
+//       targetWidget->HandleEvent(action);
+//     }
+//   }
+// };
 
-class ArrowWidget : public CommandWidget
-{
-protected:
-  //Widget* targetWidget;
-  uint16_t triangleColor;
+// class ArrowWidget : public CommandWidget
+// {
+// protected:
+//   //Widget* targetWidget;
+//   uint16_t triangleColor;
   
-public:
-  ArrowWidget(int l, int r, int t, int b, Event act, Widget* target, uint16_t color) : 
-      CommandWidget(l, r, t, b, act, target, "")
-  {
-    RectangularWidget::SetAttributes(SSD1306_BLACK, SSD1306_BLACK);
-    triangleColor = color;
-  }
+// public:
+//   ArrowWidget(Screen* scr, int l, int r, int t, int b, Event act, Widget* target, uint16_t color) : 
+//       CommandWidget(scr, l, r, t, b, act, target, "")
+//   {
+//     RectangularWidget::SetAttributes(COLOR_BLACK, COLOR_BLACK);
+//     triangleColor = color;
+//   }
 
-  void Draw(void)
-  {
-    RectangularWidget::Draw();
-    tft.setCursor(left, top);
-    if(action == INCREMENT)
-    {
-      tft.fillTriangle(left, bottom, right, bottom, (left + right) / 2, top, triangleColor);
-    }
+//   void Draw(void)
+//   {
+//     RectangularWidget::Draw();
+//     screen->setCursor(left, top);
+//     if(action == INCREMENT)
+//     {
+//       screen->fillTriangle(left, bottom, right, bottom, (left + right) / 2, top, triangleColor);
+//     }
     
-    if(action == DECREMENT)
-    {
-      tft.fillTriangle(left, top, right, top, (left + right) / 2, bottom, triangleColor);
-    }
-  }
-};
+//     if(action == DECREMENT)
+//     {
+//       screen->fillTriangle(left, top, right, top, (left + right) / 2, bottom, triangleColor);
+//     }
+//   }
+// };
 
 #define WidgetList TList<Widget*> 
 #define WidgetIterator TIListIterator<Widget*> 

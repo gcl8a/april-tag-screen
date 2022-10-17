@@ -8,8 +8,8 @@ protected:
   uint8_t pattern[4][4] = {0};
 
 public:
-  TagWidget(int l, int r, int t, int b, uint8_t id) 
-      : RectangularWidget(l, r, t, b, NONE, SSD1306_WHITE, SSD1306_WHITE), tagID(id)
+  TagWidget(Screen* scr, int l, int r, int t, int b, uint8_t id) 
+      : RectangularWidget(scr, l, r, t, b, NONE, COLOR_WHITE, COLOR_WHITE), tagID(id)
   {
         pattern[0][2] = 1;
         pattern[1][2] = 1;
@@ -20,39 +20,5 @@ public:
         pattern[3][3] = 1;
   }
     
-  void Draw(void)
-  {
-    uint16_t pixelSize = (right - left) / 8; // "pixel" here is a tag square
-
-    tft.clearDisplay();
-    // white bounding box
-    RectangularWidget::Draw();
-
-    //inner layer
-    uint16_t leftCorner = left + pixelSize;
-    uint16_t topCorner = top + pixelSize;
-    
-    tft.fillRect(leftCorner, topCorner, pixelSize * 6, pixelSize * 6, SSD1306_BLACK);
-
-    leftCorner += pixelSize;
-    topCorner += pixelSize;
-
-    for(int i = 0; i < 4; i++)
-        for(int j = 0; j < 4; j++)
-        {
-            if(pattern[i][j])
-            {   
-                uint16_t l = leftCorner + j * pixelSize;
-                uint16_t t = topCorner + i * pixelSize;
-                tft.fillRect(l, t, pixelSize, pixelSize, SSD1306_WHITE);
-            }
-        }
-
-    tft.display();
-  }
-
-  void OnClick(void)
-  {
-    //if(action == RETURN) activePage = target;
-  }
+  void Draw(void);
 };
