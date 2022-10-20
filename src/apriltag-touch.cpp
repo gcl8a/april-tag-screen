@@ -22,11 +22,13 @@ Page* pageTag = new Page(&screen);
 
 Button button9(9);
 
+uint16_t tagID = 0;
+
 void SetupPages(void)
 {
     Serial.println(F("SetupPages"));
 
-    pageTag->AddWidget(new TagWidget(&screen, 32, 96, 0, 64, 1));
+    pageTag->AddWidget(new TagWidget(&screen, 32, 96, 0, 64, tagID));
     pageBlank->AddWidget(new RectangularWidget(&screen, 32, 96, 0, 64, NONE));
     
     button9.init();
