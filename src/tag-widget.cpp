@@ -20,7 +20,8 @@ void TagWidget::Draw(void)
     for(int i = 0; i < 4; i++)
         for(int j = 0; j < 4; j++)
         {
-            if(pattern[i][j])
+            int index = i * 4 + j;
+            if((tagID << index) & 1)
             {   
                 uint16_t l = leftCorner + j * pixelSize;
                 uint16_t t = topCorner + i * pixelSize;

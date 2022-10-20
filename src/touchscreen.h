@@ -16,21 +16,17 @@ class Screen : public Adafruit_SSD1306
 {
 private:
   Page* activePage = NULL;
-  Page* pageHome = new Page(this);
-  Page* pageTag = new Page(this);
-
   bool redraw = false;
 
 public:
   Screen(void) : Adafruit_SSD1306(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET) {}
 
-  int CheckRedraw(void)
+  void CheckRedraw(void)
   {
     if(activePage) activePage->Draw();
-    return 1;
   }
 
-  Page* SetupPages(void);
+  //Page* SetupPages(void);
 
   void SetActivePage(Page* target) {activePage = target;}
 };
