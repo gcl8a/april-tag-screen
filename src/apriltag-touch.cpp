@@ -14,7 +14,7 @@ EventTimer timerDisplay;
 void setup(void) 
 {
   Serial.begin(115200);
-  //while(!Serial) {}
+  while(!Serial) {}
   Serial.println(F("Init"));
   
   Wire.begin();
