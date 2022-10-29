@@ -7,6 +7,7 @@
 #include "touchscreen.h"
 #include <event_timer.h>
 #include <tag-widget.h>
+#include <tag-library.h>
 #include <button.h>
 
 Screen screen;
@@ -22,13 +23,16 @@ Page* pageTag = new Page(&screen);
 
 Button button9(9);
 
-uint16_t tagID = 0;
+Tag tag;
 
 void SetupPages(void)
 {
     Serial.println(F("SetupPages"));
 
-    pageTag->AddWidget(new TagWidget(&screen, 32, 96, 0, 64, tagID));
+    tag.id = 0;
+    tag.rotations = 1;
+
+    pageTag->AddWidget(new TagWidget(&screen, 32, 96, 0, 64, &tag));
     pageBlank->AddWidget(new RectangularWidget(&screen, 32, 96, 0, 64, NONE));
     
     button9.init();
