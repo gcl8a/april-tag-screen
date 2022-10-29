@@ -61,7 +61,7 @@ void TagWidget::Draw(void)
         for(int j = 0; j < 4; j++)
         {
             int index = i * 4 + j;
-            if((currTag->id << index) & 1)
+            if((pattern << index) & 1)
             {   
                 uint16_t l = leftCorner + j * pixelSize;
                 uint16_t t = topCorner + i * pixelSize;
