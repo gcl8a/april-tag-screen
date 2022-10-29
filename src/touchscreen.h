@@ -26,8 +26,6 @@ public:
     if(activePage) activePage->Draw();
   }
 
-  //Page* SetupPages(void);
-
   void SetActivePage(Page* target) {activePage = target;}
 };
 
