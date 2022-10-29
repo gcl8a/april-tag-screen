@@ -85,6 +85,7 @@ void SetupPages(void)
 void setup(void) 
 {
   Serial.begin(115200);
+
   Serial.println(F("Init"));
   
   Wire.begin();
