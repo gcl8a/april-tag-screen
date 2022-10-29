@@ -5,7 +5,7 @@ uint16_t moveBit(const uint16_t& p, int8_t from, int8_t to)
 {
     uint16_t mask = 1 << from;
     int8_t distance = to - from;
-    uint16_t r = distance > 0 ? (p & mask) >> distance : (p & mask) << -distance;
+    uint16_t r = distance < 0 ? (p & mask) >> -distance : (p & mask) << distance;
 
     return r;
 }
@@ -50,19 +50,28 @@ void TagWidget::Draw(void)
     leftCorner += pixelSize;
     topCorner += pixelSize;
 
-    if(!currTag) return;
-    
-    uint16_t pattern = currTag->id;
+    if(!currTag) 
+    {
+        Serial.println("No valid tag.");
+        return;
+    }
+
+    uint16_t pattern = currTag->getPattern();
+
+    Serial.println(pattern, BIN);
+
     for(int i = 0; i < currTag->rotations; i++)
     {
         pattern = rotateTag(pattern);
     }
 
+    Serial.println(pattern, BIN);
+
     for(int i = 0; i < 4; i++)
         for(int j = 0; j < 4; j++)
         {
             int index = i * 4 + j;
-            if((pattern << index) & 1)
+            if((pattern >> index) & 1)
             {   
                 uint16_t l = leftCorner + j * pixelSize;
                 uint16_t t = topCorner + i * pixelSize;

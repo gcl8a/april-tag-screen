@@ -7,3 +7,8 @@ uint16_t tags[] = { 0b0010001100011011,
                     0b0010111010100101,
                     0b0011010001101010 };
 
+uint16_t Tag::getPattern(void)
+{
+    if(id >= 0 && id < 3) return tags[id];
+    else return 0;
+}
