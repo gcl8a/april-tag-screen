@@ -29,8 +29,8 @@ void SetupPages(void)
 {
     Serial.println(F("SetupPages"));
 
-    tag.id = 0;
-    tag.rotations = 2;
+    tag.id = 1;
+    tag.rotations = 0;
 
     pageTag->AddWidget(new TagWidget(&screen, 32, 96, 0, 64, &tag));
     pageBlank->AddWidget(new RectangularWidget(&screen, 32, 96, 0, 64, NONE));

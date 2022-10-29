@@ -78,4 +78,5 @@ void TagWidget::Draw(void)
                 screen->fillRect(l, t, pixelSize, pixelSize, COLOR_WHITE);
             }
         }
+    //currTag->rotations++; uncomment to test
   }
