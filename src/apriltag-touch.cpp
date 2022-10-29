@@ -6,65 +6,115 @@
 
 #include "touchscreen.h"
 #include <event_timer.h>
+#include <tag-widget.h>
+#include <tag-library.h>
+#include <button.h>
+#include <keypad.h>
 
+Screen screen;
+
+#define DISPLAY_INTERVAL 2000UL
+#define REFRESH_INTERVAL 5000UL
+
+EventTimer timerRefresh;
 EventTimer timerDisplay;
 
-#define DISPLAY_INTERVAL 5000UL
+Page* pageBlank = new Page(&screen);
+Page* pageTag = new Page(&screen);
+
+Tag tag;
+
+Button button(11);
+
+MetalKeypad keypad;
+String code;
+
+void handleKeyPress(uint8_t key)
+{
+  if(key == POUND)
+  {
+    if(code.length() == 3)
+    {
+      tag.id = code.substring(0, 2).toInt();
+      tag.rotations = code.substring(2).toInt();
+
+      Serial.print(tag.id);
+      Serial.print('\t');
+      Serial.print(tag.rotations);
+      Serial.print('\n');
+
+      screen.SetActivePage(pageTag);
+      screen.CheckRedraw();
+      timerDisplay.Start(DISPLAY_INTERVAL);
+
+    }
+    code = "";
+  }
+
+  else if(key == STAR)
+  {
+      screen.SetActivePage(pageTag);
+      screen.CheckRedraw();
+      timerDisplay.Start(DISPLAY_INTERVAL);
+  }
+
+  else if(key == 10) code += "0";
+
+  else code += String(key);
+
+  Serial.println(code); //for debugging
+
+  
+}
+
+void SetupPages(void)
+{
+    Serial.println(F("SetupPages"));
+
+    tag.id = 1;
+    tag.rotations = 0;
+
+    pageTag->AddWidget(new TagWidget(&screen, 32, 96, 0, 64, &tag));
+    pageBlank->AddWidget(new RectangularWidget(&screen, 32, 96, 0, 64, NONE));
+    
+    button.init();
+
+    Serial.println(F("/SetupPages"));
+}
 
 void setup(void) 
 {
   Serial.begin(115200);
-  while(!Serial) {}
+
   Serial.println(F("Init"));
   
   Wire.begin();
-
-  //needs to happen early -- before zones are initialized in ::SetupPages()
-  //rtc.Init();
   
-  tft.begin();
-  tft.setRotation(1);
+  screen.begin();
+  screen.clearDisplay();
+  screen.display();
 
-  if (!ctp.begin(40)) // pass in 'sensitivity' coefficient
-  {  
-    Serial.println(F("Couldn't start FT6206!"));
-  }
-  
-  tft.fillScreen(ILI9341_BLACK);
-  tft.print(F("Init"));
+  SetupPages();
 
-  activePage = SetupPages();
-
-  timerDisplay.start(2000);
+  timerRefresh.start(REFRESH_INTERVAL);
 }
 
 void loop() 
 {
-  if(timerDisplay.CheckExpired()) redraw = true; //refresh the screen
-
-  // if(ctp.touched()) 
-  // {
-  //   // Retrieve the point  
-  //   TS_Point p = ctp.getPoint();
-    
-  //   // transform the point to the rotated system
-  //   int x = 320 - p.y; 
-  //   int y = p.x;       
-    
-  //   if(activePage->HandleClick(x, y))
-  //     redraw = true; //could be made more efficient
-  // }
-
-  if(redraw) 
+  if(button.checkButtonPress())
   {
-    if(activePage) 
-    {
-      activePage->Draw();
-    }
-
-    timerDisplay.Start(2000);
-
-    redraw = false;
+    screen.SetActivePage(pageTag);
+    screen.CheckRedraw();
+    timerDisplay.Start(DISPLAY_INTERVAL);
   }
+
+  if(timerDisplay.CheckExpired())
+  {
+    screen.SetActivePage(pageBlank);
+    screen.CheckRedraw();
+  }
+
+  uint8_t key = keypad.checkKeypress();
+  if(key) handleKeyPress(key);
 }
 
