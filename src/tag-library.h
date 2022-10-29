@@ -2,4 +2,8 @@
 
 #include <Arduino.h>
 
-uint16_t getTag(uint8_t id);
+struct Tag
+{
+  uint16_t id;
+  uint8_t rotations; // 0 = N; 1 = E; 2 = S; 3 = W
+};

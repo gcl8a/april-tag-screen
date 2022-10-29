@@ -5,7 +5,7 @@ uint16_t moveBit(const uint16_t& p, int8_t from, int8_t to)
 {
     uint16_t mask = 1 << from;
     int8_t distance = to - from;
-    uint16_t r = distance > 0 ? (p & r) >> distance : (p & r) << -distance;
+    uint16_t r = distance > 0 ? (p & mask) >> distance : (p & mask) << -distance;
 
     return r;
 }
@@ -31,6 +31,7 @@ uint16_t rotateTag(const uint16_t& pattern)
     newPattern |= moveBit(pattern, 14, 8);
     newPattern |= moveBit(pattern, 15, 12);
 
+    return newPattern;
 }
 
 void TagWidget::Draw(void)
