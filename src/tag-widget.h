@@ -5,7 +5,7 @@
 struct Tag
 {
   uint16_t id;
-  uint16_t angle;
+  uint8_t rotations; // 0 = N; 1 = E; 2 = S; 3 = W
 };
 
 class TagWidget : public RectangularWidget
