@@ -16,7 +16,6 @@ Screen screen;
 #define DISPLAY_INTERVAL 2000UL
 #define REFRESH_INTERVAL 5000UL
 
-EventTimer timerRefresh;
 EventTimer timerDisplay;
 
 Page* pageBlank = new Page(&screen);
@@ -91,12 +90,13 @@ void setup(void)
   Wire.begin();
   
   screen.begin();
+
+  delay(10);
+
   screen.clearDisplay();
   screen.display();
 
   SetupPages();
-
-  timerRefresh.start(REFRESH_INTERVAL);
 }
 
 void loop() 
