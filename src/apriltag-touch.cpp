@@ -26,7 +26,7 @@ Tag tag;
 
 Button button(11);
 
-MetalKeypad keypad;
+Metal32340SWKeypad keypad;
 String code;
 
 void handleKeyPress(uint8_t key)
