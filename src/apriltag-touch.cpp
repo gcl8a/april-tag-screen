@@ -23,7 +23,7 @@ Page* pageTag = new Page(&screen);
 
 Tag tag;
 
-Button button(11);
+Button button(A2);
 
 Metal32340SWKeypad keypad;
 String code;
