@@ -86,6 +86,7 @@ void setup(void)
   Serial.begin(115200);
 
   Serial.println(F("Init"));
+  delay(1000);
   
   Wire.begin();
   
